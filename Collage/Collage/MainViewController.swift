@@ -105,7 +105,11 @@ class MainViewController: UIViewController {
     let photos = storyboard!.instantiateViewController(identifier: "PhotosViewController") as! PhotosViewController
     navigationController!.pushViewController(photos, animated: true)
     
-    photos.$selectedPhotosCount.filter { $0 > 0 }
+    photos.$selectedPhotosCount
+      .filter { $0 > 0 }
+      .map { "Selected \($0) photos" }
+      .assign(to: \.title, on: self)
+      .store(in: &subscriptions)
     
     let newPhotos = photos.selectedPhotos.share()
     
