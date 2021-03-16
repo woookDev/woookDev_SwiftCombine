@@ -111,7 +111,11 @@ class MainViewController: UIViewController {
       .assign(to: \.title, on: self)
       .store(in: &subscriptions)
     
-    let newPhotos = photos.selectedPhotos.share()
+    let newPhotos = photos.selectedPhotos
+      .prefix(while: { [unowned self] _ in
+        return self.images.value.count < 6
+      })
+      .share()
     
     newPhotos.map { [unowned self] newImage in
       // 1
