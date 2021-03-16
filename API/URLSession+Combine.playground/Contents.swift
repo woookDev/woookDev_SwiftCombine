@@ -12,6 +12,9 @@ let url = URL(string: "https://mysite.com/mydata.json")!
 let subscription = URLSession.shared
   // 2
   .dataTaskPublisher(for: url)
+  .tryMap { data, _ in
+    try JSONDecoder().decode(MyType.self, from: data)
+  }
   .sink { completion in
     // 3
     if case .failure(let err) = completion {
