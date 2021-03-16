@@ -1,5 +1,7 @@
 import UIKit
 
+import Combine
+
 var str = "Hello, playground"
 
 func test() {
@@ -12,9 +14,8 @@ let url = URL(string: "https://mysite.com/mydata.json")!
 let subscription = URLSession.shared
   // 2
   .dataTaskPublisher(for: url)
-  .tryMap { data, _ in
-    try JSONDecoder().decode(MyType.self, from: data)
-  }
+  .map(\.data)
+  .decode(type: MyType.self, decoder: JSONDecoder())
   .sink { completion in
     // 3
     if case .failure(let err) = completion {
