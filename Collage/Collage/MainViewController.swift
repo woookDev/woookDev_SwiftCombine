@@ -122,6 +122,13 @@ class MainViewController: UIViewController {
     // 3
     .store(in: &subscriptions)
     
+    newPhotos
+      .ignoreOutput()
+      .delay(for: 2.0, scheduler: DispatchQueue.main)
+      .sink { [unowned self] _ in
+        self.updateUI(photos: self.images.value)
+      } receiveValue: { _ in }
+      .store(in: &subscriptions)
   }
   
   private func showMessage(_ title: String, description: String? = nil) {
