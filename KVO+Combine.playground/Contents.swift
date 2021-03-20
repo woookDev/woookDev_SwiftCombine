@@ -25,7 +25,7 @@ class TestObject: NSObject {
 let obj = TestObject()
 
 // 3
-let subscription2 = obj.publisher(for: \.integerProperty)
+let subscription2 = obj.publisher(for: \.integerProperty, options: [.prior])
   .sink {
     print("integerProperty changes to \($0)")
   }
